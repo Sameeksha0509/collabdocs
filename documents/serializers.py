@@ -14,6 +14,7 @@ class DocumentVersionSerializer(serializers.ModelSerializer):
 class DocumentSerializer(serializers.ModelSerializer):
     latest_version_number = serializers.SerializerMethodField()
     content = serializers.CharField(write_only=True, required=False, help_text="Initial content for version 1")
+    workspace = serializers.UUIDField(required=False)
 
     class Meta:
         model = Document
@@ -21,7 +22,7 @@ class DocumentSerializer(serializers.ModelSerializer):
             "id", "workspace", "title", "status", "created_by",
             "latest_version_number", "content", "updated_at",
         ]
-        read_only_fields = ["id", "created_by", "updated_at", "workspace"]
+        read_only_fields = ["id", "created_by", "updated_at"]
 
     def get_latest_version_number(self, obj):
         latest = obj.current_version
